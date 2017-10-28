@@ -1,5 +1,6 @@
-
-
+import re #regular expressions are used to tokenize the text
+import nltk #NLTK library is used to remove the stopwords in the corpus
+import spacy #spacy library is used for text lemmatization
 
 class ProgrammingAssignmentTwo():
 
@@ -90,7 +91,24 @@ class ProgrammingAssignmentTwo():
     :type list
     """
     def textProcessing(self):
-        pass
+        processedText = []
+
+        # try to read the corpus line by line
+        try:
+            # Tokenize each line in the corpus, taking all the words and ignoring the punctuation using regular expression.
+            # Append each word to the processedText list.
+            # Word order will not be affected.
+            for line in self.rawText.split('\n'):
+                #white space separation and punctuation removal
+                tokenizedLine = re.findall(r"[\w]+", line)
+                # Append each token of the tokenized line to processedText list
+                for token in tokenizedLine:
+                    processedText.append(token.lower()) #lowercasing
+        except Exception as e:
+            print("There was an issue during text processing.")
+            print(e)
+
+        return processedText
 
     """
     Calculates the cosine similarity with sets T and B
