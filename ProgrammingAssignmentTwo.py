@@ -1,6 +1,8 @@
 import re #regular expressions are used to tokenize the text
-import nltk #NLTK library is used to remove the stopwords in the corpus
-import spacy #spacy library is used for text lemmatization
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords #NLTK library is used to remove the stopwords in the corpus
+#import spacy #spacy library is used for text lemmatization
 
 class ProgrammingAssignmentTwo():
 
@@ -93,7 +95,7 @@ class ProgrammingAssignmentTwo():
     def textProcessing(self):
         processedText = []
 
-        # try to read the corpus line by line
+        #split by whitespaces, punctuation removal, lowercasing
         try:
             # Tokenize each line in the corpus, taking all the words and ignoring the punctuation using regular expression.
             # Append each word to the processedText list.
@@ -105,9 +107,27 @@ class ProgrammingAssignmentTwo():
                 for token in tokenizedLine:
                     processedText.append(token.lower()) #lowercasing
         except Exception as e:
-            print("There was an issue during text processing.")
+            print("An error occured during text processing.")
             print(e)
 
+        #stopwords removal
+        try:
+            for word in stopwords.words('english'):
+                for processedTextWord in processedText:
+                    if(word == processedTextWord):
+                        processedText.remove(processedTextWord)
+        except Exception as e:
+            print("An error occured during stopwords removal.")
+            print(e)
+        #for debugging purposes, print the english stopwords
+        #print(stopwords.words('english'))
+
+        #lemmatization
+        try:
+            pass
+        except Exception as e:
+            print("An error occured during lemmatization.")
+            print(e)
         return processedText
 
     """
