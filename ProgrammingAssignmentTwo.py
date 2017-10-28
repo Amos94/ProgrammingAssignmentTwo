@@ -2,7 +2,8 @@ import re #regular expressions are used to tokenize the text
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords #NLTK library is used to remove the stopwords in the corpus
-#import spacy #spacy library is used for text lemmatization
+import spacy #spacy library is used for text lemmatization
+nlp = spacy.load('en')
 
 class ProgrammingAssignmentTwo():
 
@@ -94,6 +95,7 @@ class ProgrammingAssignmentTwo():
     """
     def textProcessing(self):
         processedText = []
+        finalProcessedText = []
 
         #split by whitespaces, punctuation removal, lowercasing
         try:
@@ -124,11 +126,20 @@ class ProgrammingAssignmentTwo():
 
         #lemmatization
         try:
-            pass
+            processedTextString = ""
+            for word in processedText:
+                processedTextString += word + " "
+            lemmatizedText = nlp(processedTextString)
+
+            for token in lemmatizedText:
+                #For debug: see detalied lemmas
+                #print(token, token.lemma, token.lemma_)
+                finalProcessedText.append(token.lemma_)
         except Exception as e:
             print("An error occured during lemmatization.")
             print(e)
-        return processedText
+
+        return finalProcessedText
 
     """
     Calculates the cosine similarity with sets T and B
