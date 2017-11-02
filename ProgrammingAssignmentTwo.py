@@ -17,6 +17,7 @@ class ProgrammingAssignmentTwo():
     processedText = [] #this list will contain all the words of text.txt file after processing
     basisWords = [] #this list will contain all the words of B.txt file
     targetWords = [] #this list will contain all the words of T.txt file
+    frequencyMatrix = {}
 
     """
     Class constructor
@@ -139,8 +140,34 @@ class ProgrammingAssignmentTwo():
             print("An error occured during lemmatization.")
             print(e)
 
+        self.processedText = finalProcessedText
         return finalProcessedText
 
+    """
+    Create frequency matrix
+    """
+    def createFrequencyMatrix(self):
+        frequencyMatrix = {}
+        processedTextLength = len(self.processedText)-1
+
+        #creating a dictionart of tuples that is, first word represents a row entry(a target word), and the second one represents the column entry(a basis word)
+        #record their frequency
+        for target in self.targetWords:
+            for basis in self.basisWords:
+                pairOfWords = tuple((target, basis))
+                frequencyMatrix[pairOfWords] = 0
+        for i in range(0,processedTextLength):
+            if (self.processedText[i] in self.targetWords):
+                print(self.processedText[i] + " appears in the target words list\n")
+            if(self.processedText[i] in self.basisWords):
+                print(self.processedText[i] + " appears in the basis words list\n")
+            if(i<2):
+                pass
+            elif(i>processedTextLength-2):
+                pass
+            else:
+                pass
+        #print(frequencyMatrix)
     """
     Calculates the cosine similarity with sets T and B
     """
@@ -190,3 +217,4 @@ print(pa2Obj.readTextFile())
 print(pa2Obj.readBasis())
 print(pa2Obj.readTarget())
 print(pa2Obj.textProcessing())
+pa2Obj.createFrequencyMatrix()
