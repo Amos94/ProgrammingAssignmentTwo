@@ -156,18 +156,66 @@ class ProgrammingAssignmentTwo():
             for basis in self.basisWords:
                 pairOfWords = tuple((target, basis))
                 frequencyMatrix[pairOfWords] = 0
+
+
         for i in range(0,processedTextLength):
             if (self.processedText[i] in self.targetWords):
                 print(self.processedText[i] + " appears in the target words list\n")
-            if(self.processedText[i] in self.basisWords):
-                print(self.processedText[i] + " appears in the basis words list\n")
-            if(i<2):
-                pass
-            elif(i>processedTextLength-2):
-                pass
-            else:
-                pass
-        #print(frequencyMatrix)
+                # treat special cases when the window cannot be exactly -2 w +2
+
+                if (i < 2):
+                    if(i == 0):
+                        if (self.processedText[i + 1] in self.basisWords):
+                            pairOfWords = tuple((self.processedText[i], self.processedText[i + 1]))
+                            frequencyMatrix[pairOfWords] += 1
+                        if (self.processedText[i + 2] in self.basisWords):
+                            pairOfWords = tuple((self.processedText[i], self.processedText[i + 2]))
+                            frequencyMatrix[pairOfWords] += 1
+                    if(i == 1):
+                        if (self.processedText[i - 1] in self.basisWords):
+                            pairOfWords = tuple((self.processedText[i], self.processedText[i - 1]))
+                            frequencyMatrix[pairOfWords] += 1
+                        if (self.processedText[i + 1] in self.basisWords):
+                            pairOfWords = tuple((self.processedText[i], self.processedText[i + 1]))
+                            frequencyMatrix[pairOfWords] += 1
+                        if (self.processedText[i + 2] in self.basisWords):
+                            pairOfWords = tuple((self.processedText[i], self.processedText[i + 2]))
+                            frequencyMatrix[pairOfWords] += 1
+
+                elif (i > processedTextLength - 2):
+                    if(i == processedTextLength-1):
+                        if (self.processedText[i - 2] in self.basisWords):
+                            pairOfWords = tuple((self.processedText[i], self.processedText[i - 2]))
+                            frequencyMatrix[pairOfWords] += 1
+                        if (self.processedText[i - 1] in self.basisWords):
+                            pairOfWords = tuple((self.processedText[i], self.processedText[i - 1]))
+                            frequencyMatrix[pairOfWords] += 1
+                        if (self.processedText[i + 1] in self.basisWords):
+                            pairOfWords = tuple((self.processedText[i], self.processedText[i + 1]))
+                            frequencyMatrix[pairOfWords] += 1
+                    if(i == processedTextLength):
+                        if (self.processedText[i - 2] in self.basisWords):
+                            pairOfWords = tuple((self.processedText[i], self.processedText[i - 2]))
+                            frequencyMatrix[pairOfWords] += 1
+                        if (self.processedText[i - 1] in self.basisWords):
+                            pairOfWords = tuple((self.processedText[i], self.processedText[i - 1]))
+                            frequencyMatrix[pairOfWords] += 1
+
+                else:
+                    if (self.processedText[i - 2] in self.basisWords):
+                        pairOfWords = tuple((self.processedText[i], self.processedText[i - 2]))
+                        frequencyMatrix[pairOfWords] += 1
+                    if (self.processedText[i - 1] in self.basisWords):
+                        pairOfWords = tuple((self.processedText[i], self.processedText[i - 1]))
+                        frequencyMatrix[pairOfWords] += 1
+                    if (self.processedText[i + 1] in self.basisWords):
+                        pairOfWords = tuple((self.processedText[i], self.processedText[i + 1]))
+                        frequencyMatrix[pairOfWords] += 1
+                    if (self.processedText[i + 2] in self.basisWords):
+                        pairOfWords = tuple((self.processedText[i], self.processedText[i + 2]))
+                        frequencyMatrix[pairOfWords] += 1
+
+        print(frequencyMatrix)
     """
     Calculates the cosine similarity with sets T and B
     """
