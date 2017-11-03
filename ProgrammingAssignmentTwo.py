@@ -4,7 +4,7 @@ nltk.download('stopwords')
 from nltk.corpus import stopwords #NLTK library is used to remove the stopwords in the corpus
 import spacy #spacy library is used for text lemmatization
 nlp = spacy.load('en')
-
+import TwoDimensionalDictionary
 class ProgrammingAssignmentTwo():
 
     """
@@ -17,7 +17,7 @@ class ProgrammingAssignmentTwo():
     processedText = [] #this list will contain all the words of text.txt file after processing
     basisWords = [] #this list will contain all the words of B.txt file
     targetWords = [] #this list will contain all the words of T.txt file
-    frequencyMatrix = {}
+    frequencyMatrix = TwoDimensionalDictionary.tdd()
 
     """
     Class constructor
@@ -160,9 +160,9 @@ class ProgrammingAssignmentTwo():
 
         for i in range(0,processedTextLength):
             if (self.processedText[i] in self.targetWords):
-                print(self.processedText[i] + " appears in the target words list\n")
-                # treat special cases when the window cannot be exactly -2 w +2
+                #print(self.processedText[i] + " appears in the target words list\n") #for debug purposes
 
+                # treat special cases when the window cannot be exactly -2 w +2
                 if (i < 2):
                     if(i == 0):
                         if (self.processedText[i + 1] in self.basisWords):
@@ -215,7 +215,16 @@ class ProgrammingAssignmentTwo():
                         pairOfWords = tuple((self.processedText[i], self.processedText[i + 2]))
                         frequencyMatrix[pairOfWords] += 1
 
-        print(frequencyMatrix)
+        #For debug purposes
+        #print(frequencyMatrix) #for debug purposes
+
+        for tuples, frequencies in frequencyMatrix.items():
+            self.frequencyMatrix[str(tuples[0])][str(tuples[1])] = frequencies
+
+        #For debug purposes
+        #print(self.frequencyMatrix)
+        #print(self.frequencyMatrix['test']['car'])
+        return frequencyMatrix
     """
     Calculates the cosine similarity with sets T and B
     """
