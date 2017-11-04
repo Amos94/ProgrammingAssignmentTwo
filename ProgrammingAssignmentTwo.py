@@ -223,7 +223,7 @@ class ProgrammingAssignmentTwo():
 
         #For debug purposes
         #print(self.frequencyMatrix)
-        #print(self.frequencyMatrix['test']['car'])
+        #print(self.frequencyMatrix['lady']['lucas'])
         return frequencyMatrix
     """
     Calculates the cosine similarity with sets T and B
@@ -274,4 +274,4 @@ print(pa2Obj.readTextFile())
 print(pa2Obj.readBasis())
 print(pa2Obj.readTarget())
 print(pa2Obj.textProcessing())
-pa2Obj.createFrequencyMatrix()
+print(pa2Obj.createFrequencyMatrix())
