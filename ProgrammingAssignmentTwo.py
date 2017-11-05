@@ -157,7 +157,7 @@ class ProgrammingAssignmentTwo():
         frequencyMatrix = {}
         processedTextLength = len(self.processedText)-1
 
-        #creating a dictionart of tuples that is, first word represents a row entry(a target word), and the second one represents the column entry(a basis word)
+        #creating a dictionary of tuples that is, first word represents a row entry(a target word), and the second one represents the column entry(a basis word)
         #record their frequency
         for target in self.targetWords:
             for basis in self.basisWords:
@@ -359,7 +359,24 @@ class ProgrammingAssignmentTwo():
     Calculate the cosine similarity matrix T x T using the PMI feature matrix.
     """
     def calculateCosineSimilarityMatrixTT(self):
-        pass
+        csTT = TwoDimensionalDictionary.tdd()
+        vec1 = []
+        vec2 = []
+        for targetWordOnce in self.featureMatrix:
+            for targetWordTwice in self.featureMatrix:
+                vec1 = []
+                vec2 = []
+                #For debug purposes
+                #print(self.featureMatrix[targetWordOnce].values(), self.featureMatrix[targetWordTwice].values())
+                for nr in self.featureMatrix[targetWordOnce].values():
+                    vec1.append(nr)
+                for nr in self.featureMatrix[targetWordTwice].values():
+                    vec2.append(nr)
+                csTT[targetWordOnce][targetWordTwice] = self.calculateCosineSimilarity(vec1, vec2)
+                print(targetWordOnce, targetWordTwice, csTT[targetWordOnce][targetWordTwice])
+        print(csTT)
+        print('DONE')
+        return csTT
 
 
     """
@@ -403,3 +420,6 @@ print(pa2Obj.readTarget())
 print(pa2Obj.textProcessing())
 print(pa2Obj.createFrequencyMatrix())
 print(pa2Obj.calculateFeatureMatix())
+print("HERE")
+pa2Obj.calculateCosineSimilarityMatrixTT()
+print('now here')
