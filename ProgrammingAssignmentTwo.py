@@ -146,6 +146,8 @@ class ProgrammingAssignmentTwo():
             print(e)
 
         self.processedText = finalProcessedText
+        #For debug purposes
+        print(self.processedText)
         return finalProcessedText
 
     """
@@ -305,7 +307,7 @@ class ProgrammingAssignmentTwo():
                 targetWord = tuples[0]
                 basisWord = tuples[1]
                 self.featureMatrix[targetWord][basisWord] = self.calculatePMI(self.createContigencyTable(targetWord,basisWord))
-
+                print(targetWord, basisWord, freq, self.featureMatrix[targetWord][basisWord])
         return self.featureMatrix
 
     """
@@ -347,3 +349,4 @@ print(pa2Obj.readTarget())
 print(pa2Obj.textProcessing())
 print(pa2Obj.createFrequencyMatrix())
 print(pa2Obj.calculateFeatureMatix())
+print(pa2Obj.processedText)
