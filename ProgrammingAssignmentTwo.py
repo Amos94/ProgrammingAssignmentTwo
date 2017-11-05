@@ -366,16 +366,20 @@ class ProgrammingAssignmentTwo():
             for targetWordTwice in self.featureMatrix:
                 vec1 = []
                 vec2 = []
+
                 #For debug purposes
                 #print(self.featureMatrix[targetWordOnce].values(), self.featureMatrix[targetWordTwice].values())
+
                 for nr in self.featureMatrix[targetWordOnce].values():
                     vec1.append(nr)
                 for nr in self.featureMatrix[targetWordTwice].values():
                     vec2.append(nr)
                 csTT[targetWordOnce][targetWordTwice] = self.calculateCosineSimilarity(vec1, vec2)
-                print(targetWordOnce, targetWordTwice, csTT[targetWordOnce][targetWordTwice])
-        print(csTT)
-        print('DONE')
+
+                #For debug purposes
+                #print(targetWordOnce, targetWordTwice, csTT[targetWordOnce][targetWordTwice])
+        #print(csTT)
+
         return csTT
 
 
@@ -420,6 +424,4 @@ print(pa2Obj.readTarget())
 print(pa2Obj.textProcessing())
 print(pa2Obj.createFrequencyMatrix())
 print(pa2Obj.calculateFeatureMatix())
-print("HERE")
-pa2Obj.calculateCosineSimilarityMatrixTT()
-print('now here')
+print(pa2Obj.calculateCosineSimilarityMatrixTT())
