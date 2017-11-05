@@ -1,6 +1,7 @@
 import re #regular expressions are used to tokenize the text
 from math import log
 
+import math
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords #NLTK library is used to remove the stopwords in the corpus
@@ -235,12 +236,6 @@ class ProgrammingAssignmentTwo():
         #print(self.frequencyMatrix['lady']['lucas'])
         return frequencyMatrix
 
-    """
-    Calculates the cosine similarity with sets T and B
-    """
-    def calculateCosineSimilarity(self):
-        pass
-
 
     """
     Creation of contingency table in order to create: A, B, C, D, R1, R2, C1, C2, N
@@ -276,6 +271,7 @@ class ProgrammingAssignmentTwo():
         contingencyTable = [a, b, c, d, n, r1, c1]
         return contingencyTable
 
+
     """
     Calculate PMI (MI score)
     N.B.: this method is a helper method for: calculateFeatureMatix
@@ -296,6 +292,7 @@ class ProgrammingAssignmentTwo():
 
         return log(float(a) / (float(r1) * float(c1)) * float(n), 2)
 
+
     """
     Calculate the feature matrix T x B using the context window size 5 (two positions before and two after the target word). Use point-wise mutual information scores as weights.
     """
@@ -303,12 +300,61 @@ class ProgrammingAssignmentTwo():
 
         for tuples, freq in self.freqDict.items():
 
+                # For debug purposes
                 #print(tuples, freq)
+
                 targetWord = tuples[0]
                 basisWord = tuples[1]
                 self.featureMatrix[targetWord][basisWord] = self.calculatePMI(self.createContigencyTable(targetWord,basisWord))
-                print(targetWord, basisWord, freq, self.featureMatrix[targetWord][basisWord])
+
+                #For debug purposes
+                #print(targetWord, basisWord, freq, self.featureMatrix[targetWord][basisWord])
+        #print(self.featureMatrix)
+
         return self.featureMatrix
+
+
+    """
+    This method calculates and return the scalar product of two vectors
+    """
+    def calculateScalarProduct(self, vector1, vector2):
+
+        vectorsLength = len(vector1)-1
+        scalarProduct = 0
+
+        for i in range(0, vectorsLength):
+            scalarProduct += (vector1[i] * vector2[i])
+
+        return scalarProduct
+
+
+    """
+    This method calculates and return the norm of a vector
+    """
+    def calculateVectorNorm(self, vector1):
+        return math.sqrt(self.calculateScalarProduct(vector1, vector1))
+
+
+    """
+    This method calculates the cosine similarity between two vectors
+    """
+    def calculateCosineSimilarity(self, vector1, vector2):
+        return(self.calculateScalarProduct(vector1, vector2) / (self.calculateVectorNorm(vector1) * self.calculateVectorNorm(vector2)))
+
+
+    """
+    This method calculates the distance between two vectors
+    """
+    def calculateDistance(self, vector1, vector2):
+        vectorsLength = len(vector1) - 1
+        sum = 0
+        for i in range(0, vectorsLength):
+            sum += math.pow(vector1[i] - vector2[i],2)
+
+        distance = math.sqrt(sum)
+
+        return distance
+
 
     """
     Calculate the cosine similarity matrix T x T using the PMI feature matrix.
@@ -316,12 +362,21 @@ class ProgrammingAssignmentTwo():
     def calculateCosineSimilarityMatrixTT(self):
         pass
 
+
     """
     Convert the similarity score into distance. The output of this step are two matrices: one for similarity, one for distance.
     """
     def convertSimilarityScoreIntoDistance(self):
         pass
 
+
+    """
+    Calculates the cosine similarity with sets T and B
+    """
+    def calculateCosineSimilarityTB(self):
+        pass
+
+    
     """
     Group the most similar words together using two functions prepared by Tatyana:  hierarchical clustering and k-means.
     """
@@ -349,4 +404,3 @@ print(pa2Obj.readTarget())
 print(pa2Obj.textProcessing())
 print(pa2Obj.createFrequencyMatrix())
 print(pa2Obj.calculateFeatureMatix())
-print(pa2Obj.processedText)
