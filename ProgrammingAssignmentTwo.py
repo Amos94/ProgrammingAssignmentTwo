@@ -17,6 +17,7 @@ class ProgrammingAssignmentTwo():
     processedText = [] #this list will contain all the words of text.txt file after processing
     basisWords = [] #this list will contain all the words of B.txt file
     targetWords = [] #this list will contain all the words of T.txt file
+    wordsContingencyTable = {} # in order to get PMI weightnings we need to create a contingency table
     frequencyMatrix = TwoDimensionalDictionary.tdd()
 
     """
@@ -225,11 +226,53 @@ class ProgrammingAssignmentTwo():
         #print(self.frequencyMatrix)
         #print(self.frequencyMatrix['lady']['lucas'])
         return frequencyMatrix
+
     """
     Calculates the cosine similarity with sets T and B
     """
     def calculateCosineSimilarity(self):
         pass
+
+
+    """
+    Creation of contingency table in order to create: A, B, C, D, R1, R2, C1, C2, N
+    N.B.: this method is a helper method for: calculateFeatureMatix
+    """
+    def createContigencyTable(self):
+        # Contigency table variables
+        a = 0
+        b = 0
+        c = 0
+        d = 0
+        r1 = 0
+        r2 = 0
+        c1 = 0
+        c2 = 0
+        n = 0
+
+        for tuple, val in self.pairFrequencies.items():
+            if (self.word1 == tuple[0] and self.word2 == tuple[1]):
+                a += val
+            elif (self.word1 == tuple[0] and self.word2 != tuple[1]):
+                b += val
+            elif (self.word1 != tuple[0] and self.word2 == tuple[1]):
+                c += val
+            else:
+                d += val
+
+        n = a + b + c + d
+        r1 = a + b
+        r2 = c + d
+        c1 = a + c
+        c2 = b + d
+
+        self.contingencyTable = [a, b, c, d, n, r1, c1, r2, c2]
+        return self.contingencyTable
+
+    """
+    Calculate PMI (MI score)
+    N.B.: this method is a helper method for: calculateFeatureMatix
+    """
 
     """
     Calculate the feature matrix T x B using the context window size 5 (two positions before and two after the target word). Use point-wise mutual information scores as weights.
