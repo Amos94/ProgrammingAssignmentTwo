@@ -1,4 +1,6 @@
 import re #regular expressions are used to tokenize the text
+from math import log
+
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords #NLTK library is used to remove the stopwords in the corpus
@@ -19,6 +21,8 @@ class ProgrammingAssignmentTwo():
     targetWords = [] #this list will contain all the words of T.txt file
     wordsContingencyTable = {} # in order to get PMI weightnings we need to create a contingency table
     frequencyMatrix = TwoDimensionalDictionary.tdd()
+    featureMatrix = TwoDimensionalDictionary.tdd()
+    freqDict = {}
 
     """
     Class constructor
@@ -222,6 +226,8 @@ class ProgrammingAssignmentTwo():
         for tuples, frequencies in frequencyMatrix.items():
             self.frequencyMatrix[str(tuples[0])][str(tuples[1])] = frequencies
 
+        self.freqDict = frequencyMatrix
+
         #For debug purposes
         #print(self.frequencyMatrix)
         #print(self.frequencyMatrix['lady']['lucas'])
@@ -238,7 +244,8 @@ class ProgrammingAssignmentTwo():
     Creation of contingency table in order to create: A, B, C, D, R1, R2, C1, C2, N
     N.B.: this method is a helper method for: calculateFeatureMatix
     """
-    def createContigencyTable(self):
+    def createContigencyTable(self, word1, word2):
+        contingencyTable = []
         # Contigency table variables
         a = 0
         b = 0
@@ -248,37 +255,55 @@ class ProgrammingAssignmentTwo():
         r2 = 0
         c1 = 0
         c2 = 0
-        n = 0
+        n = sum(self.freqDict.values())
 
-        for tuple, val in self.pairFrequencies.items():
-            if (self.word1 == tuple[0] and self.word2 == tuple[1]):
+        for tuple, val in self.freqDict.items():
+            if (word1 == tuple[0] and word2 == tuple[1]):
                 a += val
-            elif (self.word1 == tuple[0] and self.word2 != tuple[1]):
+            elif (word1 == tuple[0] and word2 != tuple[1]):
                 b += val
-            elif (self.word1 != tuple[0] and self.word2 == tuple[1]):
+            elif (word1 != tuple[0] and word2 == tuple[1]):
                 c += val
-            else:
-                d += val
+
+        d = n - a - b - c
 
         n = a + b + c + d
         r1 = a + b
-        r2 = c + d
         c1 = a + c
-        c2 = b + d
 
-        self.contingencyTable = [a, b, c, d, n, r1, c1, r2, c2]
-        return self.contingencyTable
+        contingencyTable = [a, b, c, d, n, r1, c1]
+        return contingencyTable
 
     """
     Calculate PMI (MI score)
     N.B.: this method is a helper method for: calculateFeatureMatix
     """
 
+    def calculatePMI(self, contingencyTable):
+
+        (a, b, c, d, n, r1, c1) = contingencyTable
+
+        a += 1
+        b += 1
+        c += 1
+        d += 1
+        n += 4
+
+        r1 = a + b
+        c1 = a + c
+
+        return log(float(a) / (float(r1) * float(c1)) * float(n), 2)
+
     """
     Calculate the feature matrix T x B using the context window size 5 (two positions before and two after the target word). Use point-wise mutual information scores as weights.
     """
     def calculateFeatureMatix(self):
-        pass
+
+        for targetWord in self.frequencyMatrix:
+            for basisWord in self.frequencyMatrix:
+                self.featureMatrix[targetWord][basisWord] = self.calculatePMI(self.createContigencyTable(targetWord,basisWord))
+
+        return self.featureMatrix
 
     """
     Calculate the cosine similarity matrix T x T using the PMI feature matrix.
@@ -318,3 +343,4 @@ print(pa2Obj.readBasis())
 print(pa2Obj.readTarget())
 print(pa2Obj.textProcessing())
 print(pa2Obj.createFrequencyMatrix())
+print(pa2Obj.featureMatrix())
