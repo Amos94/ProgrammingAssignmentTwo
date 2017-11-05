@@ -299,8 +299,11 @@ class ProgrammingAssignmentTwo():
     """
     def calculateFeatureMatix(self):
 
-        for targetWord in self.frequencyMatrix:
-            for basisWord in self.frequencyMatrix:
+        for tuples, freq in self.freqDict.items():
+
+                #print(tuples, freq)
+                targetWord = tuples[0]
+                basisWord = tuples[1]
                 self.featureMatrix[targetWord][basisWord] = self.calculatePMI(self.createContigencyTable(targetWord,basisWord))
 
         return self.featureMatrix
@@ -343,4 +346,4 @@ print(pa2Obj.readBasis())
 print(pa2Obj.readTarget())
 print(pa2Obj.textProcessing())
 print(pa2Obj.createFrequencyMatrix())
-print(pa2Obj.featureMatrix())
+print(pa2Obj.calculateFeatureMatix())
