@@ -1,7 +1,6 @@
 import re #regular expressions are used to tokenize the text
-from math import log
-
-import math
+from math import log #logarithm function
+import math #used for sqrt and pow
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords #NLTK library is used to remove the stopwords in the corpus
@@ -21,9 +20,9 @@ class ProgrammingAssignmentTwo():
     basisWords = [] #this list will contain all the words of B.txt file
     targetWords = [] #this list will contain all the words of T.txt file
     wordsContingencyTable = {} # in order to get PMI weightnings we need to create a contingency table
-    frequencyMatrix = TwoDimensionalDictionary.tdd()
-    featureMatrix = TwoDimensionalDictionary.tdd()
-    freqDict = {}
+    frequencyMatrix = TwoDimensionalDictionary.tdd() #frequency
+    featureMatrix = TwoDimensionalDictionary.tdd() #feature matrix using PMI weightnings
+    freqDict = {} #(tuple):raw frequency
 
     """
     Class constructor
@@ -376,7 +375,7 @@ class ProgrammingAssignmentTwo():
     def calculateCosineSimilarityTB(self):
         pass
 
-    
+
     """
     Group the most similar words together using two functions prepared by Tatyana:  hierarchical clustering and k-means.
     """
