@@ -328,9 +328,9 @@ class ProgrammingAssignmentTwo():
 
         new = np.array(mainList)
 
-        print(new)
+        #print(new)
 
-        self.npFeatureMatrix = np.array([])
+        self.npFeatureMatrix = new
         return self.featureMatrix
 
 
@@ -476,8 +476,9 @@ class ProgrammingAssignmentTwo():
     Group the most similar words together using two functions prepared by Tatyana:  hierarchical clustering and k-means.
     """
     def createClusters(self):
-        Clustering_functions.kmeans_clusters_print(self.featureMatrix,self.targetWords)
-        Clustering_functions.hierarchical_clusters_print(self.featureMatrix,self.targetWords)
+        Clustering_functions.kmeans_clusters_print(self.npFeatureMatrix,self.targetWords)
+        Clustering_functions.hierarchical_clusters_print(self.npFeatureMatrix,self.targetWords)
+        Clustering_functions.hierarchical_clusters_draw(self.npFeatureMatrix, self.targetWords)
 
 
 
@@ -494,7 +495,8 @@ targetFile = open("T.txt", "r", encoding="UTF-8")
 pa2Obj = ProgrammingAssignmentTwo(textFile, basisFile, targetFile)
 
 
-#Debugging helppers
+#Calling the methods created.
+#If you want to see the output for them, just call them as print(pa2Obj.methodDesired)
 pa2Obj.readTextFile()
 pa2Obj.readBasis()
 pa2Obj.readTarget()
@@ -502,5 +504,5 @@ pa2Obj.textProcessing()
 pa2Obj.createFrequencyMatrix()
 pa2Obj.calculateFeatureMatix()
 pa2Obj.calculateCosineSimilarityMatrixTT()
-#pa2Obj.convertSimilarityScoreIntoDistance()
-#print(pa2Obj.createClusters())
+pa2Obj.convertSimilarityScoreIntoDistance()
+pa2Obj.createClusters()
