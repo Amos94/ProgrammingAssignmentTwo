@@ -7,6 +7,9 @@ from nltk.corpus import stopwords #NLTK library is used to remove the stopwords 
 import spacy #spacy library is used for text lemmatization
 nlp = spacy.load('en')
 import TwoDimensionalDictionary
+import Clustering_functions
+import numpy as np
+
 class ProgrammingAssignmentTwo():
 
     """
@@ -22,7 +25,12 @@ class ProgrammingAssignmentTwo():
     wordsContingencyTable = {} # in order to get PMI weightnings we need to create a contingency table
     frequencyMatrix = TwoDimensionalDictionary.tdd() #frequency
     featureMatrix = TwoDimensionalDictionary.tdd() #feature matrix using PMI weightnings
+    npFeatureMatrix = np.array([]) # FEATURE MATRIX AS NUMPY ARRAY
     freqDict = {} #(tuple):raw frequency
+    csTT = TwoDimensionalDictionary.tdd() #TxT cosine similarity matrix
+    distanceTT = TwoDimensionalDictionary.tdd()  # TxT distance matrix computed from csTT
+    distanceMatrixRawTT = TwoDimensionalDictionary.tdd() # distance matrix for TxT computed from Matrix Frequency
+    distanceMatrix = TwoDimensionalDictionary.tdd()  # distance matrix for TxB computed from Matrix Frequency
 
     """
     Class constructor
@@ -147,7 +155,7 @@ class ProgrammingAssignmentTwo():
 
         self.processedText = finalProcessedText
         #For debug purposes
-        print(self.processedText)
+        #print(self.processedText)
         return finalProcessedText
 
     """
@@ -309,7 +317,20 @@ class ProgrammingAssignmentTwo():
                 #For debug purposes
                 #print(targetWord, basisWord, freq, self.featureMatrix[targetWord][basisWord])
         #print(self.featureMatrix)
+        mainList = []
+        for tw, bw in self.featureMatrix.items():
+            list = []
+            for nr in bw.values():
+                list.append(nr)
+            mainList.append(list)
 
+        #print(mainList)
+
+        new = np.array(mainList)
+
+        print(new)
+
+        self.npFeatureMatrix = np.array([])
         return self.featureMatrix
 
 
@@ -379,15 +400,69 @@ class ProgrammingAssignmentTwo():
                 #For debug purposes
                 #print(targetWordOnce, targetWordTwice, csTT[targetWordOnce][targetWordTwice])
         #print(csTT)
-
+        self.csTT = csTT
         return csTT
 
 
     """
     Convert the similarity score into distance. The output of this step are two matrices: one for similarity, one for distance.
+    
+    N.B.: I WAS A BIT CONFUSED WITH EXERCISE 6, SO I MIGHT IMPLEMENTED MORE THINGS THAT ARE NOT NECESSARY
     """
     def convertSimilarityScoreIntoDistance(self):
-        pass
+        print("--- Cosine Similarity of TxT ---")
+        print(self.csTT)
+
+        #Distance calculated using the TxT matrix (at least this is what I remember that we were supposed to do)
+        print("--- Distance of TxT ---")
+        distanceTT = TwoDimensionalDictionary.tdd()
+        vec1 = []
+        vec2 = []
+        for targetWordOnce in self.csTT:
+            for targetWordTwice in self.csTT:
+                vec1 = []
+                vec2 = []
+
+                # For debug purposes
+                # print(self.csTT[targetWordOnce].values(), self.csTT[targetWordTwice].values())
+
+                for nr in self.csTT[targetWordOnce].values():
+                    vec1.append(nr)
+                for nr in self.csTT[targetWordTwice].values():
+                    vec2.append(nr)
+                distanceTT[targetWordOnce][targetWordTwice] = self.calculateDistance(vec1, vec2)
+
+                # For debug purposes
+                # print(targetWordOnce, targetWordTwice, distanceTT[targetWordOnce][targetWordTwice])
+                # print(distanceTT)
+        #print(distanceTT)
+        self.distanceTT = distanceTT
+
+        #Distance for TxT calculated using the Frequency matrix (maybe this is what we had to do...)
+        #print("--- Distance of RAW FREQUENCY MATRIX for TxT---")
+        distanceMatrixRawTT = TwoDimensionalDictionary.tdd()
+        for targetWordOnce in self.frequencyMatrix:
+            for targetWordTwice in self.frequencyMatrix:
+                vec1 = []
+                vec2 = []
+
+                #For debug purposes
+                #print(self.featureMatrix[targetWordOnce].values(), self.featureMatrix[targetWordTwice].values())
+
+                for nr in self.frequencyMatrix[targetWordOnce].values():
+                    vec1.append(nr)
+                #print(vec1) # For debug purposes
+                for nr in self.frequencyMatrix[targetWordTwice].values():
+                    vec2.append(nr)
+                #print(vec2)# For debug purposes
+                distanceMatrixRawTT[targetWordOnce][targetWordTwice] = self.calculateDistance(vec1, vec2)
+
+                #For debug purposes
+                #print(targetWordOnce, targetWordTwice, distanceMatrix[targetWordOnce][targetWordTwice])
+        #print(distanceMatrixRawTT)
+        self.distanceMatrixRawTT = distanceMatrixRawTT
+
+        return self.csTT, distanceTT
 
 
     """
@@ -401,7 +476,9 @@ class ProgrammingAssignmentTwo():
     Group the most similar words together using two functions prepared by Tatyana:  hierarchical clustering and k-means.
     """
     def createClusters(self):
-        pass
+        Clustering_functions.kmeans_clusters_print(self.featureMatrix,self.targetWords)
+        Clustering_functions.hierarchical_clusters_print(self.featureMatrix,self.targetWords)
+
 
 
 """
@@ -418,10 +495,12 @@ pa2Obj = ProgrammingAssignmentTwo(textFile, basisFile, targetFile)
 
 
 #Debugging helppers
-print(pa2Obj.readTextFile())
-print(pa2Obj.readBasis())
-print(pa2Obj.readTarget())
-print(pa2Obj.textProcessing())
-print(pa2Obj.createFrequencyMatrix())
-print(pa2Obj.calculateFeatureMatix())
-print(pa2Obj.calculateCosineSimilarityMatrixTT())
+pa2Obj.readTextFile()
+pa2Obj.readBasis()
+pa2Obj.readTarget()
+pa2Obj.textProcessing()
+pa2Obj.createFrequencyMatrix()
+pa2Obj.calculateFeatureMatix()
+pa2Obj.calculateCosineSimilarityMatrixTT()
+#pa2Obj.convertSimilarityScoreIntoDistance()
+#print(pa2Obj.createClusters())
