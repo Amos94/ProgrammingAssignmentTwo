@@ -1,0 +1,17 @@
+If you would like to test my code on your files, please add your corpus in text.txt, target words in T.txt, and basis words in B.txt.
+
+Please note that I used the whole basis(B.txt) once, to make sure the cosine similarity matrix TxB is created and correct.
+The other times I worked with B_smaller.txt. This was just for time-related purposes. In any case, the program should not give any error.
+
+In creation of my solution I prefered the OOP approach. So, at the end of the code there is an instance of the class ProgrammingassignmentTwo (pa2Obj).
+Every method can be called through this object. Furthermore, every method created returns something, so, if you would like to see the output of any given method,
+please use print(pa2Obj.some_method).
+
+For task 6 (Convert the similarity score into distance. The output of this step are two matrices: one for similarity, one for distance.), as output I understood that
+those matrices must be printed, so this is what I did. Furthermore, the matrices are also returned in the order specified.
+
+TwoDimensionalDictionary.py is compulsory for the program to work. It is my approach for 2D dictionaries. It is very user friendly and can be used to call cells in a 2D
+dictionary as in other programming languages such as C, C++, C#, or Java, i.e., for example dictionary['something']['other thing']). However, for the feature matrix, I
+created a special matrix made with numpy (npFeatureMatrix = np.array([]) # FEATURE MATRIX AS NUMPY ARRAY), so it can be used with Clustering_functions.py.
+
+I hope you will understand my code easily, I did my best in a relative short period of time.

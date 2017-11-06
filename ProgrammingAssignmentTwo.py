@@ -1,4 +1,5 @@
 import re #regular expressions are used to tokenize the text
+import time
 from math import log #logarithm function
 import math #used for sqrt and pow
 import nltk
@@ -378,6 +379,7 @@ class ProgrammingAssignmentTwo():
 
     """
     Calculate the cosine similarity matrix T x T using the PMI feature matrix.
+    !!!N.B.: B.txt must contain the same wors as T.txt!!!
     """
     def calculateCosineSimilarityMatrixTT(self):
         csTT = TwoDimensionalDictionary.tdd()
@@ -469,7 +471,30 @@ class ProgrammingAssignmentTwo():
     Calculates the cosine similarity with sets T and B
     """
     def calculateCosineSimilarityTB(self):
-        pass
+        csTB = TwoDimensionalDictionary.tdd()
+        vec1 = []
+        vec2 = []
+        for targetWord in self.featureMatrix:
+            #for basisWord in self.featureMatrix[targetWord].items():
+                for tw2 in self.featureMatrix:
+                    vec1 = []
+                    vec2 = []
+                    #print(self.featureMatrix[targetWord].items())
+                    #print(basisWord)
+                    #print(self.featureMatrix[targetWord][basisWord])
+                    # For debug purposes
+                    # print(self.featureMatrix[targetWordOnce].values(), self.featureMatrix[targetWordTwice].values())
+
+                    for nr in self.featureMatrix[targetWord].values():
+                        vec1.append(nr)
+                    for nr in self.featureMatrix[tw2].values():
+                        vec2.append(nr)
+                    csTB[targetWord][tw2] = self.calculateCosineSimilarity(vec1, vec2)
+
+                    # For debug purposes
+                    # print(targetWordOnce, targetWordTwice, csTT[targetWordOnce][targetWordTwice])
+                    # print(csTT)
+        return csTB
 
 
     """
@@ -506,3 +531,7 @@ pa2Obj.calculateFeatureMatix()
 pa2Obj.calculateCosineSimilarityMatrixTT()
 pa2Obj.convertSimilarityScoreIntoDistance()
 pa2Obj.createClusters()
+# start = time.time()
+# print(pa2Obj.calculateCosineSimilarityTB())
+# duration = time.time()-start
+# print("Duration", duration)
