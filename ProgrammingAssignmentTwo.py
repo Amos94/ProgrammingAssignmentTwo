@@ -475,25 +475,22 @@ class ProgrammingAssignmentTwo():
         vec1 = []
         vec2 = []
         for targetWord in self.featureMatrix:
-            #for basisWord in self.featureMatrix[targetWord].items():
-                for tw2 in self.featureMatrix:
-                    vec1 = []
-                    vec2 = []
-                    #print(self.featureMatrix[targetWord].items())
-                    #print(basisWord)
-                    #print(self.featureMatrix[targetWord][basisWord])
-                    # For debug purposes
-                    # print(self.featureMatrix[targetWordOnce].values(), self.featureMatrix[targetWordTwice].values())
+            for tw2 in self.featureMatrix:
+                vec1 = []
+                vec2 = []
 
-                    for nr in self.featureMatrix[targetWord].values():
-                        vec1.append(nr)
-                    for nr in self.featureMatrix[tw2].values():
-                        vec2.append(nr)
-                    csTB[targetWord][tw2] = self.calculateCosineSimilarity(vec1, vec2)
+                # For debug purposes
+                # print(self.featureMatrix[targetWord].values(), self.featureMatrix[tw2].values())
 
-                    # For debug purposes
-                    # print(targetWordOnce, targetWordTwice, csTT[targetWordOnce][targetWordTwice])
-                    # print(csTT)
+                for nr in self.featureMatrix[targetWord].values():
+                    vec1.append(nr)
+                for nr in self.featureMatrix[tw2].values():
+                    vec2.append(nr)
+                csTB[targetWord][tw2] = self.calculateCosineSimilarity(vec1, vec2)
+
+                # For debug purposes
+                # print(targetWord, tw2, csTB[targetWord][tw2])
+                # print(csTB)
         return csTB
 
 
